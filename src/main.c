@@ -46,9 +46,13 @@ int main(int argc, char** argv)
 //	stos_t* s = utworz();
 	labirynt_informacje(l);
 	wczytaj_czesc(l, nazwa_wczytanie, p);
-	dfs(l, p->x-1, p->y-1);
-//	wypisz_czesc(l);
+//	printf("numer czesci: %d\n", numer_czesci(l, p));
+//	dfs(l, p->x-1, p->y-1);
+	wypisz_czesc(l);
 //	wierzcholek(s);
+//	wczytaj_czesc(l, nazwa_wczytanie, p);
+//	printf("\n");
+//	wypisz_czesc(l);
 
 
 

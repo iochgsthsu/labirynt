@@ -3,10 +3,6 @@
 #include "lab.h"
 #include "postac.h"
 
-// wielkosc czesci wczytywanego labiryntu
-#define DATA_WIERSZE 128
-#define DATA_KOLUMNY 128
-
 
 labirynt_t* utworz_labirynt(char* nazwa_pliku) //uzyskuje informacje o labiryncie i alokuje pamiec
 {
@@ -194,4 +190,48 @@ void labirynt_informacje(labirynt_t* l)
 	}
 	printf("Ilosc wierszy: %d\nIlosc kolumn: %d\nPoczatek: (%d,%d)\nKoniec: (%d,%d)\n", l->wiersze, l->kolumny, l->poczatek[0], l->poczatek[1], l->koniec[0], l->koniec[1]);
 
+}
+
+void zapisz_czesc(labirynt_t* l, char* nazwa)
+{
+	FILE* plik = fopen(nazwa, "w");
+	if(plik == NULL)
+	{
+		fprintf(stderr, "zapisz_czesc: nie mozna zapisac pliku\n");
+		return;
+	}
+	for(int i = 0; i<DATA_WIERSZE; i++)
+	{
+		for(int j = 0; j<DATA_KOLUMNY; j++)
+		{
+			fprintf(plik, "%c", l->data[i][j]);
+	
+		}
+		fprintf(plik, "\n");
+	}
+
+
+	fclose(plik);
+	return;
+
+
+}
+
+int numer_czesci(labirynt_t* l, postac_t* p)
+{
+	int x = p->x / DATA_WIERSZE;
+	int y = p->y / DATA_KOLUMNY;
+	int czescy = l->kolumny / DATA_KOLUMNY;
+	return (x*czescy)+(y+1);
+}
+
+void usun_czesc(char* nazwa)
+{
+	if(remove(nazwa) != 0)
+	{
+		fprintf(stderr, "usun_czesc: nie mozna usunac pliku\n");
+		return;
+	}
+
+	return;
 }
