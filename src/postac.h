@@ -6,4 +6,5 @@ typedef struct postac{
 }postac_t;
 
 postac_t* utworz_postac(int x, int y);
+void zwolnij_postac(postac_t* p);
 #endif

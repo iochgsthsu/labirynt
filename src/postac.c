@@ -13,3 +13,8 @@ postac_t* utworz_postac(int x, int y){
        	p->y = y;
 	return p;
 }
+
+void zwolnij_postac(postac_t* p)
+{
+	free(p);
+}

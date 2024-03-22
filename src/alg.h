@@ -2,6 +2,7 @@
 #define _DFS_H
 #include "lab.h"
 #include "stos.h"
-int dfs(labirynt_t*, int, int);
+#include "postac.h"
+int dfs(labirynt_t*, postac_t*, char*, int, int);
 
 #endif

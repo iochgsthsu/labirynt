@@ -1,7 +1,8 @@
 #include "lab.h"
-#include "dfs.h"
+#include "alg.h"
 #include "postac.h"
 #include "stos.h"
+#include "io.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -43,23 +44,13 @@ int main(int argc, char** argv)
 		fprintf(stderr, "%s: Nie mozna utworzyc postaci\n", argv[0]);
 		return 1;
 	}
-//	stos_t* s = utworz();
 	labirynt_informacje(l);
 	wczytaj_czesc(l, nazwa_wczytanie, p);
-//	printf("numer czesci: %d\n", numer_czesci(l, p));
-//	dfs(l, p->x-1, p->y-1);
-	wypisz_czesc(l);
-//	wierzcholek(s);
-//	wczytaj_czesc(l, nazwa_wczytanie, p);
-//	printf("\n");
+	l->nrc = numer_czesci(l, p);
+	dfs(l, p, nazwa_wczytanie, (p->x-1), (p->y-1));
 //	wypisz_czesc(l);
-
-
-
-
-
-	
-
-
+	usun_czesci(l);
+	zwolnij_postac(p);
+	zwolnij_lab(l);
 	return 0;
 }
