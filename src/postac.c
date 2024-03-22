@@ -14,6 +14,11 @@ postac_t* utworz_postac(int x, int y){
 	return p;
 }
 
+void aktualizacja(postac_t*p, int w, int k)
+{
+
+}
+
 void zwolnij_postac(postac_t* p)
 {
 	free(p);

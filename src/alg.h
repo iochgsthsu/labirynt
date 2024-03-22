@@ -3,6 +3,6 @@
 #include "lab.h"
 #include "stos.h"
 #include "postac.h"
-int dfs(labirynt_t*, postac_t*, char*, int, int);
+int dfs(labirynt_t*, char*, int, int);
 
 #endif

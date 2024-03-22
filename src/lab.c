@@ -100,16 +100,16 @@ void labirynt_informacje(labirynt_t* l)
 }
 
 
-int numer_czesci(labirynt_t* l, postac_t* p)
+int numer_czesci(labirynt_t* l, int w, int k)
 {
-	if(l == NULL || p == NULL)
+	if(l == NULL)
 	{
 		fprintf(stderr, "numer_czesci: nie mozna przetworzyc danych\n");
 		return 1;
 	}
 
-	int x = p->x / DATA_WIERSZE;
-	int y = p->y / DATA_KOLUMNY;
+	int x = w / DATA_WIERSZE;
+	int y = k / DATA_KOLUMNY;
 	int czescy = l->kolumny / DATA_KOLUMNY;
 	return (x*czescy)+(y+1);
 }

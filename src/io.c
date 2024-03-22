@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, postac_t* p) // wczytuje czesc ktora jest potrzebna
+void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje czesc ktora jest potrzebna
 {
 	if(l == NULL)
 	{
@@ -22,7 +22,7 @@ void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, postac_t* p) // wczytuje cz
 	char t;
 	for(int i = 0; i<DATA_WIERSZE; i++)
 	{	
-		fseek(plik, (p->x/DATA_WIERSZE)*(l->kolumny+1)*DATA_WIERSZE + (p->y/DATA_KOLUMNY) * DATA_KOLUMNY + i*(l->kolumny+1), SEEK_SET);
+		fseek(plik, (w/DATA_WIERSZE)*(l->kolumny+1)*DATA_WIERSZE + (k/DATA_KOLUMNY) * DATA_KOLUMNY + i*(l->kolumny+1), SEEK_SET);
 		if(koniec == 0)
 		{
 			for(int j = 0; j<DATA_KOLUMNY; j++)
@@ -151,9 +151,9 @@ void usun_czesci(labirynt_t* l)
 
 }
 
-int zamien_czesc(labirynt_t* l, postac_t* p, char* nazwa_pliku)
+int zamien_czesc(labirynt_t* l, int w, int k, char* nazwa_pliku)
 {
-	int n = numer_czesci(l, p);
+	int n = numer_czesci(l, w, k);
 	if(n != l->nrc)
 	{
 
@@ -166,7 +166,7 @@ int zamien_czesc(labirynt_t* l, postac_t* p, char* nazwa_pliku)
 		FILE* tp = fopen(tnazwa2, "r");
 		if(tp == NULL)
 		{
-			wczytaj_czesc(l,nazwa_pliku, p);
+			wczytaj_czesc(l,nazwa_pliku, w, k);
 		}
 		else
 		{

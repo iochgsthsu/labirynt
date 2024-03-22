@@ -44,10 +44,10 @@ int main(int argc, char** argv)
 		fprintf(stderr, "%s: Nie mozna utworzyc postaci\n", argv[0]);
 		return 1;
 	}
-	labirynt_informacje(l);
-	wczytaj_czesc(l, nazwa_wczytanie, p);
-	l->nrc = numer_czesci(l, p);
-	dfs(l, p, nazwa_wczytanie, (p->x-1), (p->y-1));
+//	labirynt_informacje(l);
+	wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
+	l->nrc = numer_czesci(l, p->x, p->y);
+	dfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
 //	wypisz_czesc(l);
 	usun_czesci(l);
 	zwolnij_postac(p);
