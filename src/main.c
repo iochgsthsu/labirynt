@@ -3,6 +3,7 @@
 #include "postac.h"
 #include "stos.h"
 #include "io.h"
+#include "kolejka.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -47,8 +48,8 @@ int main(int argc, char** argv)
 //	labirynt_informacje(l);
 	wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
 	l->nrc = numer_czesci(l, p->x, p->y);
-	dfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
-//	wypisz_czesc(l);
+//	dfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
+	bfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
 	usun_czesci(l);
 	zwolnij_postac(p);
 	zwolnij_lab(l);

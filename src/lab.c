@@ -107,11 +107,23 @@ int numer_czesci(labirynt_t* l, int w, int k)
 		fprintf(stderr, "numer_czesci: nie mozna przetworzyc danych\n");
 		return 1;
 	}
+	int x = l->wiersze/DATA_WIERSZE;
+	if(l->wiersze%DATA_WIERSZE != 0)
+	{
+		x+=1;
+	}
 
-	int x = w / DATA_WIERSZE;
-	int y = k / DATA_KOLUMNY;
-	int czescy = l->kolumny / DATA_KOLUMNY;
-	return (x*czescy)+(y+1);
+	int y = l->kolumny/DATA_KOLUMNY;
+	if(l->kolumny%DATA_KOLUMNY != 0)
+	{
+		y+=1;
+	}
+
+	int wiersze  = w/DATA_WIERSZE;
+
+	return wiersze*y + k/DATA_KOLUMNY +1;
+
+
 }
 
 

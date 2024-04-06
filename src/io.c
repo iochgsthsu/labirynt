@@ -130,9 +130,9 @@ void usun_czesc(char* nazwa)
 void usun_czesci(labirynt_t* l)
 {
 
-	int maxc = (l->wiersze/DATA_WIERSZE+1)*(l->kolumny/DATA_KOLUMNY+1) ;
+	int maxc = ((l->wiersze/DATA_WIERSZE)+1)*((l->kolumny/DATA_KOLUMNY)+1) ;
 	char tmp[32];
-	for(int i = 1; i< maxc; i++)
+	for(int i = 1; i< maxc+1; i++)
 	{
 		sprintf(tmp, "ltmp%d", i);
 		FILE* plik = fopen(tmp, "r");
