@@ -3,8 +3,8 @@
 #include "postac.h"
 
 //wielkosc wczytywanego labiryntu
-#define DATA_WIERSZE 447
-#define DATA_KOLUMNY 447
+#define DATA_WIERSZE 64
+#define DATA_KOLUMNY 64
 
 typedef struct labirynt{
 	int wiersze; //ilosc wierszy
@@ -19,5 +19,6 @@ labirynt_t* utworz_labirynt(char* nazwa_pliku);
 void zwolnij_lab(labirynt_t* l);
 void labirynt_informacje(labirynt_t* l);
 int numer_czesci(labirynt_t* l, int, int);
+void ustawpk(labirynt_t*, char*);
 
 #endif

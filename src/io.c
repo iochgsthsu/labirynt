@@ -127,11 +127,12 @@ void usun_czesc(char* nazwa)
 	return;
 }
 
+
 void usun_czesci(labirynt_t* l)
 {
 
 	int maxc = ((l->wiersze/DATA_WIERSZE)+1)*((l->kolumny/DATA_KOLUMNY)+1) ;
-	char tmp[32];
+	char* tmp = malloc(16*sizeof(char));
 	for(int i = 1; i< maxc+1; i++)
 	{
 		sprintf(tmp, "ltmp%d", i);
@@ -146,6 +147,8 @@ void usun_czesci(labirynt_t* l)
 			fclose(plik);
 		}
 	}
+	free(tmp);
+	return;
 
 
 
@@ -157,10 +160,10 @@ int zamien_czesc(labirynt_t* l, int w, int k, char* nazwa_pliku)
 	if(n != l->nrc)
 	{
 
-		char tnazwa1[32];
+		char* tnazwa1 = malloc(16*sizeof(char));
 		sprintf(tnazwa1, "ltmp%d", l->nrc);
 		zapisz_czesc(l, tnazwa1);
-		char tnazwa2[32];
+		char* tnazwa2 = malloc(16*sizeof(char));
 		l->nrc = n;
 		sprintf(tnazwa2, "ltmp%d", l->nrc);
 		FILE* tp = fopen(tnazwa2, "r");
@@ -188,6 +191,8 @@ int zamien_czesc(labirynt_t* l, int w, int k, char* nazwa_pliku)
 
 
 		}
+		free(tnazwa1);
+		free(tnazwa2);
 		return 1;
 	}
 	else

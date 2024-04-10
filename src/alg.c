@@ -4,9 +4,12 @@
 #include "io.h"
 #include "postac.h"
 #include "komorka.h"
+#include "stos.h"
 #include <stdio.h>
 #include <stdlib.h>
-int dfs(labirynt_t* l, char* nazwa, int w, int k)
+
+
+int dfs(labirynt_t* l, char* nazwa, int w, int k, FILE* zapisk)
 {
 	
 	int tw = w%DATA_WIERSZE;
@@ -18,31 +21,31 @@ int dfs(labirynt_t* l, char* nazwa, int w, int k)
 
 //	printf("\n(%d, %d)\nczesc: %d\nt: %c\n", w, k, l->nrc, t);
 
-	if(t == 'K')
+	if(t == 'P')
 	{
 		return 1;
 	}
-	else if( t == ' ' || t == 'P')
+	else if( t == 'b' || t == 'K')
 	{
-		l->data[tw][tk] = 'O';
-		if(dfs(l, nazwa, w+1, k))
+		l->data[tw][tk] = 'd';
+		if(dfs(l, nazwa, w+1, k, zapisk))
 		{
-			printf("DOL\n");
+			fprintf(zapisk, "GORA\n");
 			return 1;
 		}
-		if(dfs(l, nazwa, w, k+1))
+		if(dfs(l, nazwa, w, k+1, zapisk))
 		{
-			printf("PRAWO\n");
+			fprintf(zapisk, "LEWO\n");
 			return 1;
 		}
-		if(dfs(l, nazwa, w-1, k))
+		if(dfs(l, nazwa, w-1, k, zapisk))
 		{
-			printf("GORA\n");
+			fprintf(zapisk, "DOL\n");
 			return 1;
 		}
-		if(dfs(l, nazwa,  w, k-1))
+		if(dfs(l, nazwa,  w, k-1, zapisk))
 		{
-			printf("LEWO\n");
+			fprintf(zapisk, "PRAWO\n");
 			return 1;
 		}
 	}
@@ -50,14 +53,15 @@ int dfs(labirynt_t* l, char* nazwa, int w, int k)
 	return 0;
 }
 
-int bfs(labirynt_t* l, char* nazwa, int w, int k)
+stos_t* bfs(labirynt_t* l, char* nazwa, int w, int k)
 {
 	int r,c;
 	kmk_t km;
-	l->data[w%DATA_WIERSZE][k%DATA_KOLUMNY] = 'O';
+	l->data[w%DATA_WIERSZE][k%DATA_KOLUMNY] = 'b';
 	km.x = w;
 	km.y = k;
 	kolejka_t* kol = NULL;
+	stos_t* stos = NULL;
 	kol = k_dodaj(kol, km);
 	while(kol!=NULL)
 	{
@@ -99,16 +103,17 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 		//	printf("\n/////////////////////////////////\n");
 			if(t == ' ' || t == 'K')
 			{
+				kmk_t dodajk;
+				dodajk.x =r;
+				dodajk.y = c;
+				stos = dodaj(stos, dodajk, km);
 				if(t == 'K')
 				{
 					printf("bfs: koniec odnaleziony\n");
-					return 1;
+					return stos;
 				}
-				l->data[tw][tk] = 'O';
-				kmk_t dodaj;
-				dodaj.x = r;
-			       	dodaj.y = c;
-				kol = k_dodaj(kol, dodaj);	
+				l->data[tw][tk] = 'b';
+				kol = k_dodaj(kol, dodajk);
 
 			}	
 		}
@@ -116,7 +121,7 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 	
 		
 
-	return 0;
+	return NULL;
 
 
 }

@@ -1,5 +1,8 @@
 #ifndef _IO_H
 #define _IO_H
+#define TMP_KROKI_R "zkrtmp"
+#define TMP_KROKI "zktmp"
+
 #include "lab.h"
 #include "postac.h"
 
