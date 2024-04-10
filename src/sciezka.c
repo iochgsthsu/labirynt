@@ -135,6 +135,62 @@ void zapiszkroki(char* nazwa_zapis, char* nazwa_wczyt)
 
 
 }
+
+void zapiszkrokiout(char* nazwa_wczyt)
+{
+	FILE* wplik = fopen(nazwa_wczyt, "r");
+	if(wplik == NULL)
+	{	
+		fprintf(stderr, "zapiszkroki: nie mozna otworzyc pliku\n");
+		return;
+	}
+	int b;
+	int bprev = 'T';
+
+	
+	int kroki = 0;
+	fprintf(stdout, "START\n");
+	while((b = fgetc(wplik)) != EOF)
+	{
+	//	printf("b:%c bprev:%c kr:%d\n", b, bprev, kroki);
+		
+			if(kroki!=0 && b!=bprev && bprev!= 'T')
+			{
+				fprintf(stdout,"FORWARD %d\n", kroki);
+				if((bprev == 'G' && b == 'P') ||
+				(bprev == 'P' && b == 'D') ||
+				(bprev == 'D' && b == 'L') ||
+				(bprev == 'L' && b == 'G')
+				){
+					fprintf(stdout,"TURNRIGHT\n");
+				}
+				else
+				{
+					fprintf(stdout,"TURNLEFT\n");
+				}
+				kroki = 0;
+			}
+		kroki++;
+
+		bprev = b;
+	}
+	if(kroki!=0)
+	{
+		fprintf(stdout, "FORWARD %d\n",kroki);
+	}
+
+	fprintf(stdout, "END\n");
+
+	fclose(wplik);
+
+	return;
+
+
+}
+
+
+
+
 void odwroc(char* nazwa_wczyt, char* nazwa_zapis)
 {
 	FILE* plikczytaj = fopen(nazwa_wczyt, "r");

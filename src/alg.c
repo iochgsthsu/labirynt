@@ -109,7 +109,7 @@ stos_t* bfs(labirynt_t* l, char* nazwa, int w, int k)
 				stos = dodaj(stos, dodajk, km);
 				if(t == 'K')
 				{
-					printf("bfs: koniec odnaleziony\n");
+				//	printf("bfs: koniec odnaleziony\n");
 					return stos;
 				}
 				l->data[tw][tk] = 'b';

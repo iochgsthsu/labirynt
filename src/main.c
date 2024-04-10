@@ -36,6 +36,11 @@ int main(int argc, char** argv)
 		}
 	}
 	labirynt_t* l = utworz_labirynt(nazwa_wczytanie);
+	int czystdout = 0;
+	if(nazwa_zapis == NULL)
+	{
+		czystdout = 1;
+	}
 	if(l == NULL)
 	{
 		fprintf(stderr, "%s: Nie mozna otworzyc pliku\n", argv[0]);
@@ -47,7 +52,7 @@ int main(int argc, char** argv)
 		fprintf(stderr, "%s: Nie mozna utworzyc postaci\n", argv[0]);
 		return 1;
 	}
-	labirynt_informacje(l);
+//	labirynt_informacje(l);
 	wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
 	l->nrc = numer_czesci(l, p->x, p->y);
 	stos_t* st = bfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
@@ -61,7 +66,14 @@ int main(int argc, char** argv)
 
 	zrobsciezke(l, st, TMP_KROKI_R);
 	odwroc(TMP_KROKI_R, TMP_KROKI);
-	zapiszkroki(nazwa_zapis, TMP_KROKI);
+	if(czystdout == 0)
+	{
+		zapiszkroki(nazwa_zapis, TMP_KROKI);
+	}
+	else
+	{
+		zapiszkrokiout(TMP_KROKI);
+	}
 	usun_czesci(l);
 	usun_czesc(TMP_KROKI);
 	usun_czesc(TMP_KROKI_R);
