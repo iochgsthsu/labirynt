@@ -12,6 +12,7 @@ void zapisz_czesc(labirynt_t* l, char*);
 void usun_czesc(char* nazwa);
 void usun_czesci(labirynt_t* l);
 int zamien_czesc(labirynt_t* l, int, int , char* nazwa_pliku);
+void wczytajbin(char*);
 
 
 #endif

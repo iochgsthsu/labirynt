@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lab.h"
-#include "io.h"
+
 #include "postac.h"
 
 
@@ -108,45 +108,15 @@ int numer_czesci(labirynt_t* l, int w, int k)
 		fprintf(stderr, "numer_czesci: nie mozna przetworzyc danych\n");
 		return 1;
 	}
-	int x = l->wiersze/DATA_WIERSZE;
-	if(l->wiersze%DATA_WIERSZE != 0)
-	{
-		x+=1;
-	}
-
 	int y = l->kolumny/DATA_KOLUMNY;
 	if(l->kolumny%DATA_KOLUMNY != 0)
 	{
 		y+=1;
 	}
-
-	int wiersze  = w/DATA_WIERSZE;
-
-	return wiersze*y + k/DATA_KOLUMNY +1;
+	return (w/DATA_WIERSZE)*y + k/DATA_KOLUMNY +1;
 
 
 }
-
-void ustawpk(labirynt_t* l, char* nazwa)
-{
-	if(l == NULL)
-	{
-		fprintf(stderr, "ustawpk: nie mozna odczytac labiryntu\n");
-		return;
-	}
-	zamien_czesc(l, l->poczatek[0]-1, l->poczatek[1]-1, nazwa);
-	l->data[(l->poczatek[0]-1)%DATA_WIERSZE][(l->poczatek[1]-1)%DATA_KOLUMNY] = 'P';
-	zamien_czesc(l, l->koniec[0]-1, l->koniec[1]-1, nazwa);
-	l->data[(l->koniec[0]-1)%DATA_WIERSZE][(l->koniec[1]-1)%DATA_KOLUMNY] = 'K';
-		
-
-}
-
-
-
-
-
-
 
 void zwolnij_lab(labirynt_t* l)
 {

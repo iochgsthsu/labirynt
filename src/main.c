@@ -15,7 +15,8 @@ int main(int argc, char** argv)
 	int opcja;
 	char* nazwa_zapis;
 	char* nazwa_wczytanie;
-	while((opcja = getopt(argc, argv, "i:o:")) != -1)
+	int pomoc = 0;
+	while((opcja = getopt(argc, argv, "i:o:h")) != -1)
 	{
 		switch(opcja)
 		{
@@ -29,6 +30,13 @@ int main(int argc, char** argv)
 				nazwa_zapis = optarg;
 				break;
 			}
+			case 'h':
+			{
+				pomoc = 1;
+				printf("%s: Opis parametrow\n Program obsluguje dane parametry:\n-o NAZWAPLIKU -> Wczytanie labiryntu z pliku o nazwie NAZWAPLIKU\n-i NAZWAPLIKU -> Zapis kroków rozwiązania labiryntu do pliku o nazwie NAZWAPLIKU\nPrzyklad: ./labirynt -i maze -o maze_kroki\n",argv[0]);
+
+			}
+
 			default:
 			{
 				break;
@@ -37,6 +45,10 @@ int main(int argc, char** argv)
 	}
 	labirynt_t* l = utworz_labirynt(nazwa_wczytanie);
 	int czystdout = 0;
+	if(pomoc == 1)
+	{
+		return 0;
+	}
 	if(nazwa_zapis == NULL)
 	{
 		czystdout = 1;
@@ -52,15 +64,18 @@ int main(int argc, char** argv)
 		fprintf(stderr, "%s: Nie mozna utworzyc postaci\n", argv[0]);
 		return 1;
 	}
+//	wczytajbin(nazwa_wczytanie);
 //	labirynt_informacje(l);
+
+	
 	wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
 	l->nrc = numer_czesci(l, p->x, p->y);
 	stos_t* st = bfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
+	
 
 //	wypisz(st);
 	
 
-	ustawpk(l, nazwa_wczytanie);
 
 //	dfs(l, nazwa_wczytanie, l->koniec[0]-1, l->koniec[1]-1, zktmp);
 

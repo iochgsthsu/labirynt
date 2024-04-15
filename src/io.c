@@ -66,6 +66,21 @@ void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje c
 
 	fclose(plik);
 	return;
+																
+
+}
+
+void wczytajbin(char* nazwa)
+{
+	FILE* plik = fopen(nazwa, "r");
+	if(plik == NULL){
+		fprintf(stderr, "bin2text: nie mozna otworzyc pliku\n");
+		return;
+	}
+	char buf[4];
+	size_t s = fread(buf, 4,1, plik);
+	printf("%s\n", buf);
+	fclose(plik);
 
 
 }

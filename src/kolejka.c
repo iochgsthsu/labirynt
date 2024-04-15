@@ -27,6 +27,7 @@ kolejka_t* k_usun(kolejka_t* k)
 		poprz = tmp;
 		tmp = tmp->nast;
 	}
+	free(tmp);
 	if(poprz == NULL)
 	{
 		k = NULL;
