@@ -34,15 +34,43 @@ stos_t* zdejmij(stos_t* s)
 	{
 		return NULL;
 	}
+	/*
 	stos_t* tmp = malloc(sizeof(stos_t*));
 	if(tmp == NULL)
 	{
 		return NULL;
-	}
+	}*/
+	stos_t* tmp = s;
+	/*
 	tmp = s;
 	tmp = tmp->next;
-	free(s);
-	return tmp;
+	*/
+	s = s->next;
+	free(tmp);
+	return s;
+}
+
+kmk_t przod_obec(stos_t* s)
+{
+	kmk_t km;
+	km.x = -1;
+	km.y = -1;
+	if(s== NULL)
+	{
+		return km;
+	}
+	return s->obec;
+}
+kmk_t przod_poprz(stos_t* s)
+{
+	kmk_t km;
+	km.x = -1;
+	km.y = -1;
+	if(s == NULL)
+	{
+		return km;
+	}
+	return s->poprz;
 }
 
 void wierzcholek(stos_t* s)
@@ -60,4 +88,21 @@ void wypisz(stos_t* s)
 		tmp = tmp->next;
 	}
 	return;
+}
+
+int ilosc_stos(stos_t* s)
+{
+	int il = 0;
+	if(s == NULL)
+	{
+		return - 1;
+	}
+
+	stos_t* tmp = s;
+	while(tmp!= NULL)
+	{
+		il++;
+		tmp = tmp->next;
+	}
+	return il;
 }

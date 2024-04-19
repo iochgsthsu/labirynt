@@ -6,16 +6,12 @@
 #include "lab.h"
 
 
-void zrobsciezke(labirynt_t* l, stos_t* s, char* nazwa_zapis)
+void zrobsciezke(labirynt_t* l, int tkmax, char* nazwa_zapis)
 {
 	kmk_t o, p;
 	int dx, dy;
-	
-	if(s == NULL)
-	{
-		fprintf(stderr, "zrobsciezke: zly stos\n");
-		return;
-	}
+	int tpx, tpy;
+
 	if(nazwa_zapis== NULL)
 	{
 		fprintf(stderr, "zrobsciezke: zla nazwa\n");
@@ -28,51 +24,83 @@ void zrobsciezke(labirynt_t* l, stos_t* s, char* nazwa_zapis)
 		fprintf(stderr,"zrobsciezke: nie mozna pisac do pliku\n");
 		return;
 	}
-	while(s != NULL)
+	int pcz = 0;
+	int x;
+	char* t = malloc(16*sizeof(char));
+	for(int i = 0; i<tkmax; i++)
 	{
-
-		o = s->obec;
-		p = s->poprz;
-		dx = o.x - p.x;
-		dy = o.y - p.y;
-	//	printf("o: (%d,%d) p: (%d,%d) dx: %d dy: %d\n", o.x, o.y, p.x, p.y, dx, dy);
-
-		if(dx==1)
+		sprintf(t, "tk%d", tkmax-i);
+		FILE* lista = fopen(t, "r");
+		if(lista == NULL)
 		{
-			fprintf(plik, "D");
+			fprintf(stderr, "zrobsciezka: zla lista\n");
+			return;
 		}
-		else if(dx==-1)
+		if(pcz == 0){
+			x = fscanf(lista, "%hd %hd %hd %hd\n", &o.x, &o.y, &p.x, &p.y);
+			pcz = 1;
+		}
+		while(1)
 		{
-			fprintf(plik, "G");
-
-		}
-		else if(dy==1)
-		{
-			fprintf(plik, "P");
-
-		}
-		else if(dy==-1)
-		{
-			fprintf(plik, "L");
-		}
+			
 		
-		if(s->poprz.x == l->poczatek[0]-1 && s->poprz.y == l->poczatek[1]-1)
-		{
-			break;
-		}
-
-
-		while(p.x != s->obec.x || p.y != s->obec.y)
-		{
-			s = zdejmij(s);	
-		}
 		
-
 		
+			if(x!=EOF)
+			{
+				dx = o.x - p.x;
+				dy = o.y - p.y;
+
+				if(dx==1)
+				{
+					fprintf(plik, "D");
+				}
+				else if(dx==-1)
+				{
+					fprintf(plik, "G");
+	
+				}
+				else if(dy==1)
+				{
+					fprintf(plik, "P");
+	
+				}
+				else if(dy==-1)
+				{
+					fprintf(plik, "L");
+				}
+			
+				if(tpx == l->poczatek[0]-1 && tpy == l->poczatek[1]-1)
+				{
+					break;
+				}
+				tpx = p.x;
+				tpy = p.y;
+			}
+			
+			while(o.x != tpx || o.y != tpy)
+			{
+				x = fscanf(lista, "%hd %hd %hd %hd\n", &o.x, &o.y, &p.x, &p.y);
+				if(x==EOF)
+				{
+					break;
+				}
+			
+			
+			}
+			if(x==EOF)
+			{
+				break;
+			}
+			
+				
+		}
+		fclose(lista);	
 		
 	}
-
+	
 	fclose(plik);
+	free(t);
 
 
 	

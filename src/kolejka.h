@@ -10,5 +10,6 @@ kolejka_t* k_dodaj(kolejka_t*, kmk_t);
 int czypusta(kolejka_t*);
 kmk_t przod(kolejka_t* k);
 void wypiszelementy(kolejka_t*);
+int ilosc_elementow(kolejka_t*);
 #endif
 

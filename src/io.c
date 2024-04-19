@@ -1,5 +1,7 @@
 #include "lab.h"
 #include "postac.h"
+#include "komorka.h"
+#include "stos.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -70,20 +72,48 @@ void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje c
 
 }
 
-void wczytajbin(char* nazwa)
+/*void wczytajbin(char* nazwa)
 {
 	FILE* plik = fopen(nazwa, "r");
 	if(plik == NULL){
 		fprintf(stderr, "bin2text: nie mozna otworzyc pliku\n");
 		return;
 	}
-	char buf[4];
-	size_t s = fread(buf, 4,1, plik);
-	printf("%s\n", buf);
+	char fileid[4];
+	char escape[1];
+	char columns[2];
+	char lines[2];
+	char entry_x[2];
+	char entry_y[2];
+	char exit_x[2];
+	char exit_y[2];
+	char reserved[12];
+	char counter[4];
+	char sollution_off[4];
+	char separator[1];
+	char wall[1];
+	char path[1];
+	size_t s0 = fread(fileid, 4, 1, plik);
+	size_t s1 = fread(escape, 1, 1, plik);
+	size_t s2 = fread(columns, 2, 1, plik);
+	size_t s3 = fread(lines, 2, 1, plik);
+	size_t s4 = fread(entry_x, 2, 1, plik);
+	size_t s5 = fread(entry_y, 2, 1, plik);
+	size_t s6 = fread(exit_x, 2, 1, plik);
+	size_t s7 = fread(exit_y, 2, 1, plik);
+	size_t s8 = fread(reserved, 12, 1, plik);
+	size_t s9 = fread(counter, 4, 1, plik);
+	size_t s10 = fread(sollution_off, 4, 1, plik);
+	size_t s11 = fread(separator, 1, 1, plik);
+	size_t s12 = fread(wall, 1, 1, plik);
+	size_t s13 = fread(path, 1, 1, plik);
+	printf("%c, %c///", lines[0], lines[1]);
+
+	printf("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, reserved, counter, sollution_off, separator, wall, path);
 	fclose(plik);
 
 
-}
+}*/
 
 void wypisz_czesc(labirynt_t* l) 
 {
@@ -169,6 +199,28 @@ void usun_czesci(labirynt_t* l)
 
 }
 
+void usun_kroki(int max_il_k)
+{
+	char* tmp = malloc(16*sizeof(char));
+	for(int i = 1; i<max_il_k+1; i++)
+	{
+		sprintf(tmp, "tk%d", i);
+		FILE * plik = fopen(tmp, "r");
+		if(plik == NULL)
+		{
+			continue;
+		}
+		else
+		{
+			usun_czesc(tmp);
+			fclose(plik);
+		}
+
+	}
+	free(tmp);
+	return;
+}
+
 int zamien_czesc(labirynt_t* l, int w, int k, char* nazwa_pliku)
 {
 	int n = numer_czesci(l, w, k);
@@ -214,6 +266,41 @@ int zamien_czesc(labirynt_t* l, int w, int k, char* nazwa_pliku)
 	{
 		return 0;
 	}
+
+}
+
+stos_t* stos_do_pliku(stos_t* s, int numer)
+{
+	if(s == NULL)
+	{
+		fprintf(stderr, "stos_do_pliku: nieprawidlowy stos\n");
+		return NULL;
+	}
+	
+	char* t  = malloc(16*sizeof(char));
+	sprintf(t, "tk%d", numer);
+	FILE* plik = fopen(t, "w");
+	if(plik == NULL)
+	{	
+		fprintf(stderr, "stos_do_pliku: nie mozna pisac do pliku\n");
+		return NULL;
+	}
+	kmk_t o, p;
+	while(s!= NULL)
+	{
+		o = przod_obec(s);
+		p = przod_poprz(s);
+		fprintf(plik, "%hd %hd %hd %hd\n", o.x, o.y, p.x, p.y);
+		s = zdejmij(s);
+
+	}
+	
+		
+
+
+	free(t);
+	fclose(plik);
+	return s;
 
 }
 

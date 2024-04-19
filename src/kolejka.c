@@ -66,6 +66,23 @@ kmk_t przod(kolejka_t* k)
 	return tmp->n;
 }
 
+int ilosc_elementow(kolejka_t* k)
+{
+	if(k == NULL)
+	{
+		fprintf(stderr, "ilosc_elementow: nieprawidlowa kolejka\n");
+		return -1;
+	}
+	int i = 0;
+	kolejka_t* tmp = k;
+	while(tmp->nast!=NULL)
+	{
+		i++;
+		tmp = tmp->nast;
+	}
+	return i+1;
+}
+
 void wypiszelementy(kolejka_t* kol){
 	if(kol == NULL)
 	{
