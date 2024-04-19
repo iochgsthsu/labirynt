@@ -1,5 +1,5 @@
 all:
-	gcc -Wall --pedantic src/*.c -o bin/labirynt
+	cc -Wall --pedantic src/*.c -o bin/labirynt
 
 
 	
