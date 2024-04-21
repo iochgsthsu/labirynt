@@ -43,6 +43,24 @@ int main(int argc, char** argv)
 			}
 		}
 	}
+	int spr = sprawdz_format(nazwa_wczytanie);
+	if(spr == 0)
+	{
+		fprintf(stderr,"%s: Nieprawidlowy format pliku\n", argv[0]);
+		return 1;
+	}
+	else if(spr == 1)
+	{
+		printf("plik tekstowy\n");
+	}
+	else if(spr == 2)
+	{
+		printf("plik bianrny\n");
+		return 0;
+	}
+		
+	
+
 	labirynt_t* l = utworz_labirynt(nazwa_wczytanie);
 	int czystdout = 0;
 	if(pomoc == 1)

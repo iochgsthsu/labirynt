@@ -2,8 +2,10 @@
 #include "postac.h"
 #include "komorka.h"
 #include "stos.h"
+#include "io.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje czesc ktora jest potrzebna
 {
@@ -301,6 +303,51 @@ stos_t* stos_do_pliku(stos_t* s, int numer)
 	free(t);
 	fclose(plik);
 	return s;
+
+}
+int sprawdz_format(char* nazwa)
+{
+	if(nazwa == NULL)
+	{
+		fprintf(stderr, "sprawdz_format: nie prawidlowa nazwa\n");
+		return 0;
+	}
+	FILE* plik = fopen(nazwa, "r");
+	if(plik == NULL)
+	{
+		fprintf(stderr, "sprawdz_format: nie mozna otworzyc pliku\n");
+		return 0;
+	}
+	char fileid[5];
+	fread(&fileid, 4, 1, plik);
+	fclose(plik);
+	int cmp = strncmp(fileid, FILEID, 4);
+	int il;
+	if(cmp == 0)
+	{
+		return 2;
+	}
+	else
+	{
+		il = 0;
+		for(int i = 0; i<4; i++)
+		{
+			if(fileid[i] == 'X' || fileid[i] == ' ' || fileid[i] == 'P' || fileid[i] == 'K')
+			{
+				il++;
+			}
+		}
+	}
+	if(il==4)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return -1;
+
 
 }
 

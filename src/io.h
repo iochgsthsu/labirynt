@@ -4,6 +4,7 @@
 #define TMP_KROKI_R "zkrtmp"
 #define TMP_KROKI "zktmp"
 #define MAX_STOS 2048
+#define FILEID "CBRR"
 
 
 #include "lab.h"
@@ -18,6 +19,7 @@ void usun_kroki(int);
 int zamien_czesc(labirynt_t* l, int, int , char* nazwa_pliku);
 void wczytajbin(char*);
 stos_t* stos_do_pliku(stos_t*, int);
+int sprawdz_format(char* nazwa); // 0 - niewlasciwy, 1 - tekstowy, 2 - binarny
 
 
 #endif

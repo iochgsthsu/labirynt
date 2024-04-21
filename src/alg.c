@@ -16,11 +16,8 @@ int dfs(labirynt_t* l, char* nazwa, int w, int k, FILE* zapisk)
 	int tw = w%DATA_WIERSZE;
 	int tk = k%DATA_KOLUMNY;
 
-//	wypisz_czesc(l);
 	zamien_czesc(l, w, k, nazwa);
 	char t = l->data[tw][tk];
-
-//	printf("\n(%d, %d)\nczesc: %d\nt: %c\n", w, k, l->nrc, t);
 
 	if(t == 'P')
 	{
@@ -66,10 +63,8 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 	kolejka_t* kol = NULL;
 	stos_t* stos = NULL;
 	kol = k_dodaj(kol, km);
-
 	while(kol!=NULL)
 	{
-
 	
 	//	wypiszelementy(kol);
 		km = przod(kol);
@@ -97,23 +92,16 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 				r = km.x;
 				c = km.y-1;
 			}
-		
-
+	
 			int tw = r%DATA_WIERSZE;
 			int tk = c%DATA_KOLUMNY;
 			zamien_czesc(l,r,c,nazwa);
 			char t = l->data[tw][tk];
 	
-	
-	
 			if(t == ' ' || t == 'K')
 			{
 				dodajk.x = r;
 				dodajk.y = c;
-
-	
-		
-				
 				stos = dodaj(stos, dodajk, km);
 				if(t == 'K')
 				{
@@ -131,15 +119,8 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 				nr_lk++;
 				stos = stos_do_pliku(stos, nr_lk);
 
-			}
-
-
-
-				
-			
+			}		
 		}
-		
-
 	}
 	return 1;
 
