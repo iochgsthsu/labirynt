@@ -74,48 +74,83 @@ void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje c
 
 }
 
-/*void wczytajbin(char* nazwa)
+labirynt_t* wczytajbininfo(char* nazwa)
 {
 	FILE* plik = fopen(nazwa, "r");
 	if(plik == NULL){
-		fprintf(stderr, "bin2text: nie mozna otworzyc pliku\n");
+		fprintf(stderr, "wczytajbininfo: nie mozna otworzyc pliku\n");
+		return NULL;
+	}
+	int fileid;
+	char escape;
+	short int columns;
+	short int lines;
+	short int entry_x;
+	short int entry_y;
+	short int exit_x;
+	short int exit_y;
+	int counter;
+	int sollution_off;
+	char separator;
+	char wall;
+	char path;
+	fread(&fileid, 4, 1, plik);
+	fread(&escape, 1, 1, plik);
+	fread(&columns, 2, 1, plik);
+	fread(&lines, 2, 1, plik);
+	fread(&entry_x, 2, 1, plik);
+	fread(&entry_y, 2, 1, plik);
+	fread(&exit_x, 2, 1, plik);
+	fread(&exit_y, 2, 1, plik);
+	fseek(plik, 12, SEEK_CUR);
+	fread(&counter, 4, 1, plik);
+	fread(&sollution_off, 4, 1, plik);
+	fread(&separator, 1, 1, plik);
+	fread(&wall, 1, 1, plik);
+	fread(&path, 1, 1, plik);
+
+	//printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path);
+	fclose(plik);
+	labirynt_t* l = malloc(sizeof(labirynt_t));
+	l->wiersze = lines;
+	l->kolumny = columns;
+	l->poczatek[0] = entry_x;
+	l->poczatek[1] = entry_y;
+	l->koniec[0] = exit_x;
+	l->koniec[1] = exit_y;
+	l->data = (char**) malloc(DATA_WIERSZE*sizeof(char*));
+	if(l->data == NULL)
+	{
+		fprintf(stderr, "wczytajbininfo: nie udalo sie przydzielic pamieci\n");
+		return NULL;
+	}
+	for(int i = 0; i<DATA_WIERSZE; i++)
+	{
+		l->data[i] = malloc(DATA_KOLUMNY*sizeof(char));
+		if(l->data[i] == NULL)
+		{
+			fprintf(stderr, "wczytajbininfo: nie udalo sie przydzielic pamieci\n");
+			return NULL;
+		}
+	}
+	return l;
+
+
+
+
+}
+
+void bin2text(char* nazwa)
+{
+	FILE* bin = fopen(nazwa, "r");
+	if(bin == NULL)
+	{
+		fprintf(stderr, "bin2text: nie mozna czytac pliku\n");
 		return;
 	}
-	char fileid[4];
-	char escape[1];
-	char columns[2];
-	char lines[2];
-	char entry_x[2];
-	char entry_y[2];
-	char exit_x[2];
-	char exit_y[2];
-	char reserved[12];
-	char counter[4];
-	char sollution_off[4];
-	char separator[1];
-	char wall[1];
-	char path[1];
-	size_t s0 = fread(fileid, 4, 1, plik);
-	size_t s1 = fread(escape, 1, 1, plik);
-	size_t s2 = fread(columns, 2, 1, plik);
-	size_t s3 = fread(lines, 2, 1, plik);
-	size_t s4 = fread(entry_x, 2, 1, plik);
-	size_t s5 = fread(entry_y, 2, 1, plik);
-	size_t s6 = fread(exit_x, 2, 1, plik);
-	size_t s7 = fread(exit_y, 2, 1, plik);
-	size_t s8 = fread(reserved, 12, 1, plik);
-	size_t s9 = fread(counter, 4, 1, plik);
-	size_t s10 = fread(sollution_off, 4, 1, plik);
-	size_t s11 = fread(separator, 1, 1, plik);
-	size_t s12 = fread(wall, 1, 1, plik);
-	size_t s13 = fread(path, 1, 1, plik);
-	printf("%c, %c///", lines[0], lines[1]);
-
-	printf("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, reserved, counter, sollution_off, separator, wall, path);
-	fclose(plik);
 
 
-}*/
+}
 
 void wypisz_czesc(labirynt_t* l) 
 {

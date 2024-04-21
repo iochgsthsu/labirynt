@@ -44,6 +44,7 @@ int main(int argc, char** argv)
 		}
 	}
 	int spr = sprawdz_format(nazwa_wczytanie);
+	labirynt_t* l = NULL;
 	if(spr == 0)
 	{
 		fprintf(stderr,"%s: Nieprawidlowy format pliku\n", argv[0]);
@@ -51,17 +52,14 @@ int main(int argc, char** argv)
 	}
 	else if(spr == 1)
 	{
-		printf("plik tekstowy\n");
+		l = utworz_labirynt(nazwa_wczytanie);
 	}
 	else if(spr == 2)
 	{
-		printf("plik bianrny\n");
+		l = wczytajbininfo(nazwa_wczytanie);
 		return 0;
 	}
 		
-	
-
-	labirynt_t* l = utworz_labirynt(nazwa_wczytanie);
 	int czystdout = 0;
 	if(pomoc == 1)
 	{
@@ -84,11 +82,17 @@ int main(int argc, char** argv)
 	}
 //	wczytajbin(nazwa_wczytanie);
 //	labirynt_informacje(l);
+	int il_tk;
+	if(spr==1)
+	{
+		wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
+		l->nrc = numer_czesci(l, p->x, p->y);
+		il_tk = bfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
+	}
+	else if(spr==2)
+	{
 
-	
-	wczytaj_czesc(l, nazwa_wczytanie, p->x, p->y);
-	l->nrc = numer_czesci(l, p->x, p->y);
-	int il_tk = bfs(l, nazwa_wczytanie, (p->x-1), (p->y-1));
+	}
 	
 
 //	wypisz(st);
