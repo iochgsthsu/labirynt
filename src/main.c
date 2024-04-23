@@ -3,6 +3,7 @@
 #include "postac.h"
 #include "stos.h"
 #include "io.h"
+#include "bin.h"
 #include "sciezka.h"
 #include "kolejka.h"
 #include <stdlib.h>
@@ -45,6 +46,7 @@ int main(int argc, char** argv)
 	}
 	int spr = sprawdz_format(nazwa_wczytanie);
 	labirynt_t* l = NULL;
+	bin_t* b = NULL;
 	if(spr == 0)
 	{
 		fprintf(stderr,"%s: Nieprawidlowy format pliku\n", argv[0]);
@@ -56,9 +58,11 @@ int main(int argc, char** argv)
 	}
 	else if(spr == 2)
 	{
-		l = wczytajbininfo(nazwa_wczytanie);
-		return 0;
+		b = wczytajbininfo(nazwa_wczytanie);
+		bin2text(b, nazwa_wczytanie);
+		l = utworz_labirynt(BIN2TEXT);
 	}
+	labirynt_informacje(l);
 		
 	int czystdout = 0;
 	if(pomoc == 1)
@@ -80,8 +84,6 @@ int main(int argc, char** argv)
 		fprintf(stderr, "%s: Nie mozna utworzyc postaci\n", argv[0]);
 		return 1;
 	}
-//	wczytajbin(nazwa_wczytanie);
-//	labirynt_informacje(l);
 	int il_tk;
 	if(spr==1)
 	{
@@ -91,15 +93,22 @@ int main(int argc, char** argv)
 	}
 	else if(spr==2)
 	{
+		wczytaj_czesc(l, BIN2TEXT, p->x, p->y);
+		l->nrc = numer_czesci(l, p->x, p->y);
+		il_tk = bfs(l, BIN2TEXT, (p->x-1), (p->y-1));
 
 	}
-	
 
-//	wypisz(st);
-	
+	if(il_tk < 0)
+	{
+		fprintf(stderr, "%s: nie udalo sie znalesc sciezki\n", argv[0]);
+		usun_czesci(l);
+		usun_kroki(-il_tk);
+		zwolnij_postac(p);
+		zwolnij_lab(l);
+		return 1;
+	}
 
-
-//	dfs(l, nazwa_wczytanie, l->koniec[0]-1, l->koniec[1]-1, zktmp);
 
 	zrobsciezke(l, il_tk, TMP_KROKI_R);
 	odwroc(TMP_KROKI_R, TMP_KROKI);
@@ -113,9 +122,12 @@ int main(int argc, char** argv)
 	}
 	usun_czesci(l);
 	usun_czesc(TMP_KROKI);
+	if(spr == 2)
+	{
+		usun_czesc(BIN2TEXT);
+	}
 	usun_czesc(TMP_KROKI_R);
 	usun_kroki(il_tk);
-	//usun_czesc(LISTA);
 	zwolnij_postac(p);
 	zwolnij_lab(l);
 	

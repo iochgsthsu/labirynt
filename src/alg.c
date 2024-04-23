@@ -122,7 +122,8 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 			}		
 		}
 	}
-	return 1;
+	// nie znaleziono sciezki
+	return -nr_lk;
 
 
 }

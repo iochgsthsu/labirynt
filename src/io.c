@@ -2,10 +2,12 @@
 #include "postac.h"
 #include "komorka.h"
 #include "stos.h"
+#include "bin.h"
 #include "io.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje czesc ktora jest potrzebna
 {
@@ -74,7 +76,7 @@ void wczytaj_czesc(labirynt_t* l, char* nazwa_pliku, int w, int k) // wczytuje c
 
 }
 
-labirynt_t* wczytajbininfo(char* nazwa)
+bin_t* wczytajbininfo(char* nazwa)
 {
 	FILE* plik = fopen(nazwa, "r");
 	if(plik == NULL){
@@ -111,36 +113,29 @@ labirynt_t* wczytajbininfo(char* nazwa)
 
 	//printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path);
 	fclose(plik);
-	labirynt_t* l = malloc(sizeof(labirynt_t));
-	l->wiersze = lines;
-	l->kolumny = columns;
-	l->poczatek[0] = entry_x;
-	l->poczatek[1] = entry_y;
-	l->koniec[0] = exit_x;
-	l->koniec[1] = exit_y;
-	l->data = (char**) malloc(DATA_WIERSZE*sizeof(char*));
-	if(l->data == NULL)
-	{
-		fprintf(stderr, "wczytajbininfo: nie udalo sie przydzielic pamieci\n");
-		return NULL;
-	}
-	for(int i = 0; i<DATA_WIERSZE; i++)
-	{
-		l->data[i] = malloc(DATA_KOLUMNY*sizeof(char));
-		if(l->data[i] == NULL)
-		{
-			fprintf(stderr, "wczytajbininfo: nie udalo sie przydzielic pamieci\n");
-			return NULL;
-		}
-	}
-	return l;
+	bin_t* b = malloc(sizeof(bin_t));
+	b->fileid = fileid;
+	b->escape = escape;
+	b->columns = columns;
+	b->lines = lines;
+	b->entry_x = entry_x;
+	b->entry_y = entry_y;
+	b->exit_x = exit_x;
+	b->exit_y = exit_y;
+	b->counter = counter;
+	b->sollution_off = sollution_off;
+	b->separator = separator;
+	b->wall = wall;
+	b->path = path;
+	return b;
+		
 
 
 
 
 }
 
-void bin2text(char* nazwa)
+void bin2text(bin_t* b, char* nazwa)
 {
 	FILE* bin = fopen(nazwa, "r");
 	if(bin == NULL)
@@ -148,6 +143,62 @@ void bin2text(char* nazwa)
 		fprintf(stderr, "bin2text: nie mozna czytac pliku\n");
 		return;
 	}
+	FILE* text = fopen(BIN2TEXT, "w");
+	if(text == NULL)
+	{
+		fprintf(stderr, "bin2text: nie mozna pisac do pliku\n");
+		return;
+	}
+
+	fseek(bin, 40, SEEK_SET);
+	char separator;
+	char value;
+	uint8_t count;
+	int nr_kolumny = 0;
+	int nr_wiersza = 1;
+	for(int i = 0; i<b->counter; i++)
+	{
+		fread(&separator, 1, 1, bin);
+		fread(&value, 1, 1, bin);
+		fread(&count, 1, 1, bin);
+		for(int j = 0; j<count+1; j++)
+		{
+			if(nr_kolumny == b->columns)
+			{
+				nr_kolumny = 0;
+				fprintf(text,"\n");
+				nr_wiersza++;
+			}
+
+			if(nr_wiersza == b->entry_y && nr_kolumny == b->entry_x-1 )
+			{
+				fprintf(text, "P");
+			}
+			else if(nr_wiersza == b->exit_y && nr_kolumny == b->exit_x-1)
+			{
+				fprintf(text, "K");
+			}
+			else
+			{
+
+				if(value == b->wall)
+				{
+					fprintf(text, "%c", value);
+				}
+				else if(value == b->path)
+				{
+					fprintf(text, "%c", value);
+				}
+			}
+			nr_kolumny++;
+
+		}
+
+		//printf("%c%c%d", separator, value, count);
+
+	}
+	fclose(text);
+	fclose(bin);
 
 
 }

@@ -47,6 +47,8 @@ labirynt_t* utworz_labirynt(char* nazwa_pliku) //uzyskuje informacje o labirynci
 		}
 	}
 
+	ilosc_kolumn = 0;
+
 	rewind(plik);
 	while((c = fgetc(plik)) != '\n')
 	{
