@@ -127,7 +127,6 @@ void zapiszkroki(char* nazwa_zapis, char* nazwa_wczyt)
 	fprintf(zplik, "START\n");
 	while((b = fgetc(wplik)) != EOF)
 	{
-	//	printf("b:%c bprev:%c kr:%d\n", b, bprev, kroki);
 		
 			if(kroki!=0 && b!=bprev && bprev!= 'T')
 			{
@@ -180,7 +179,6 @@ void zapiszkrokiout(char* nazwa_wczyt)
 	fprintf(stdout, "START\n");
 	while((b = fgetc(wplik)) != EOF)
 	{
-	//	printf("b:%c bprev:%c kr:%d\n", b, bprev, kroki);
 		
 			if(kroki!=0 && b!=bprev && bprev!= 'T')
 			{

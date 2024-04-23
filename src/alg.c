@@ -9,48 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-int dfs(labirynt_t* l, char* nazwa, int w, int k, FILE* zapisk)
-{
-	
-	int tw = w%DATA_WIERSZE;
-	int tk = k%DATA_KOLUMNY;
-
-	zamien_czesc(l, w, k, nazwa);
-	char t = l->data[tw][tk];
-
-	if(t == 'P')
-	{
-		return 1;
-	}
-	else if( t == 'b' || t == 'K')
-	{
-		l->data[tw][tk] = 'd';
-		if(dfs(l, nazwa, w+1, k, zapisk))
-		{
-			fprintf(zapisk, "GORA\n");
-			return 1;
-		}
-		if(dfs(l, nazwa, w, k+1, zapisk))
-		{
-			fprintf(zapisk, "LEWO\n");
-			return 1;
-		}
-		if(dfs(l, nazwa, w-1, k, zapisk))
-		{
-			fprintf(zapisk, "DOL\n");
-			return 1;
-		}
-		if(dfs(l, nazwa,  w, k-1, zapisk))
-		{
-			fprintf(zapisk, "PRAWO\n");
-			return 1;
-		}
-	}
-
-	return 0;
-}
-
 int bfs(labirynt_t* l, char* nazwa, int w, int k)
 {
 	int r,c;

@@ -34,17 +34,7 @@ stos_t* zdejmij(stos_t* s)
 	{
 		return NULL;
 	}
-	/*
-	stos_t* tmp = malloc(sizeof(stos_t*));
-	if(tmp == NULL)
-	{
-		return NULL;
-	}*/
 	stos_t* tmp = s;
-	/*
-	tmp = s;
-	tmp = tmp->next;
-	*/
 	s = s->next;
 	free(tmp);
 	return s;

@@ -5,6 +5,5 @@
 #include "stos.h"
 #include "postac.h"
 #include "kolejka.h"
-int dfs(labirynt_t*, char*, int, int, FILE*);
 int bfs(labirynt_t*, char*, int, int);
 #endif

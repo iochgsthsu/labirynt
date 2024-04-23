@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 		bin2text(b, nazwa_wczytanie);
 		l = utworz_labirynt(BIN2TEXT);
 	}
-	labirynt_informacje(l);
+//	labirynt_informacje(l);
 		
 	int czystdout = 0;
 	if(pomoc == 1)
