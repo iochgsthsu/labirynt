@@ -117,7 +117,7 @@ bin_t* wczytajbininfo(char* nazwa)
 	fseek(plik, counter*3, SEEK_CUR);
 	fread(&solveid, 4, 1, plik);
 
-printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\nSOLVEID: %d\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path, solveid);
+//printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\nSOLVEID: %d\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path, solveid);
 	fclose(plik);
 	bin_t* b = malloc(sizeof(bin_t));
 	b->fileid = fileid;
