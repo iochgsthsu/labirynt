@@ -44,6 +44,10 @@ int main(int argc, char** argv)
 			}
 		}
 	}
+	if(pomoc == 1)
+	{
+		return 0;
+	}
 	int spr = sprawdz_format(nazwa_wczytanie);
 	labirynt_t* l = NULL;
 	bin_t* b = NULL;
@@ -65,10 +69,6 @@ int main(int argc, char** argv)
 //	labirynt_informacje(l);
 		
 	int czystdout = 0;
-	if(pomoc == 1)
-	{
-		return 0;
-	}
 	if(nazwa_zapis == NULL)
 	{
 		czystdout = 1;
@@ -112,9 +112,16 @@ int main(int argc, char** argv)
 
 	zrobsciezke(l, il_tk, TMP_KROKI_R);
 	odwroc(TMP_KROKI_R, TMP_KROKI);
-	if(czystdout == 0)
+	if(czystdout == 0 && spr == 1)
 	{
 		zapiszkroki(nazwa_zapis, TMP_KROKI);
+	}
+	else if(spr == 2 && czystdout == 0)
+	{
+		zapiszbin(b, nazwa_wczytanie, nazwa_zapis);
+		b->steps = liczbakrokow(TMP_KROKI);
+		zapiszkrokibin(b, TMP_KROKI, nazwa_zapis);
+		
 	}
 	else
 	{

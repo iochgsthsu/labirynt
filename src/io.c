@@ -91,11 +91,14 @@ bin_t* wczytajbininfo(char* nazwa)
 	short int entry_y;
 	short int exit_x;
 	short int exit_y;
+	uint64_t res1;
+	uint32_t res2;
 	int counter;
 	int sollution_off;
 	char separator;
 	char wall;
 	char path;
+	int solveid;
 	fread(&fileid, 4, 1, plik);
 	fread(&escape, 1, 1, plik);
 	fread(&columns, 2, 1, plik);
@@ -104,14 +107,17 @@ bin_t* wczytajbininfo(char* nazwa)
 	fread(&entry_y, 2, 1, plik);
 	fread(&exit_x, 2, 1, plik);
 	fread(&exit_y, 2, 1, plik);
-	fseek(plik, 12, SEEK_CUR);
+	fread(&res1, 8, 1, plik);
+	fread(&res2, 4, 1, plik);
 	fread(&counter, 4, 1, plik);
 	fread(&sollution_off, 4, 1, plik);
 	fread(&separator, 1, 1, plik);
 	fread(&wall, 1, 1, plik);
 	fread(&path, 1, 1, plik);
+	fseek(plik, counter*3, SEEK_CUR);
+	fread(&solveid, 4, 1, plik);
 
-	//printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path);
+printf("FILEID: %d\nESCAPE: %d \nCOLUMNS: %d\nLINES: %d\nENTRY_X: %d\nENTRY_Y: %d\nEXIT_X: %d\nEXIT_Y:%d\nCOUNTER:%d \nSOLUTION_OFF: %d\nSEPARATOR: %c\nWALL: %c\nPATH: %c\nSOLVEID: %d\n", fileid, escape, columns, lines, entry_x, entry_y, exit_x, exit_y, counter, sollution_off, separator, wall, path, solveid);
 	fclose(plik);
 	bin_t* b = malloc(sizeof(bin_t));
 	b->fileid = fileid;
@@ -122,11 +128,14 @@ bin_t* wczytajbininfo(char* nazwa)
 	b->entry_y = entry_y;
 	b->exit_x = exit_x;
 	b->exit_y = exit_y;
+	b->res1= res1;
+	b->res2 = res2;
 	b->counter = counter;
 	b->sollution_off = sollution_off;
 	b->separator = separator;
 	b->wall = wall;
 	b->path = path;
+	b->solveid = solveid;
 	return b;
 		
 
@@ -201,6 +210,81 @@ void bin2text(bin_t* b, char* nazwa)
 	fclose(bin);
 
 
+}
+
+
+void zapiszbin(bin_t* b, char* nazwabin, char* nazwawynik)
+{
+	if(b == NULL)
+	{
+		fprintf(stderr, "zapiszbin: nieprawidlowa struktura binarna\n");
+		return;
+	}
+	if(nazwabin == NULL)
+	{
+		fprintf(stderr,"zapiszbin: nieprawidlowa nazwa pliku binarnego\n");
+		return;
+	}
+	if(nazwawynik == NULL)
+	{
+		fprintf(stderr, "zapiszbin: nieprawidlowa nazwa pliku wyjsciowego\n");
+		return;
+	}
+
+	FILE* plikbin = fopen(nazwabin, "r");
+	if(plikbin == NULL)
+	{
+		fprintf(stderr, "zapiszbin: nie mozna otworzyc pliku binarnego\n");
+		return;
+	}
+	FILE* plikwynik = fopen(nazwawynik, "w");
+	if(plikwynik == NULL)
+	{	
+		fprintf(stderr, "zapiszbin: nie mozna pisac do pliku wyjsciowego\n");
+		return;
+	}
+	b->sollution_off = 44 + b->counter*3;
+	fwrite(&b->fileid, 4, 1, plikwynik);
+	fwrite(&b->escape, 1, 1, plikwynik);
+	fwrite(&b->columns, 2, 1, plikwynik);
+	fwrite(&b->lines, 2, 1, plikwynik);
+	fwrite(&b->entry_x, 2, 1, plikwynik);
+	fwrite(&b->entry_y, 2, 1, plikwynik);
+	fwrite(&b->exit_x, 2, 1, plikwynik);
+	fwrite(&b->exit_y, 2, 1, plikwynik);
+	fwrite(&b->res1, 8, 1, plikwynik);
+	fwrite(&b->res2, 4, 1, plikwynik);
+	fwrite(&b->counter, 4, 1, plikwynik);
+	fwrite(&b->sollution_off, 4, 1, plikwynik);
+	fwrite(&b->separator, 1, 1, plikwynik);
+	fwrite(&b->wall, 1, 1, plikwynik);
+	fwrite(&b->path, 1, 1, plikwynik);
+
+	char sep;
+	char value;
+	uint8_t count;
+
+	fseek(plikbin, 40, SEEK_SET);
+
+	for(int i = 0; i<b->counter; i++)
+	{
+		fread(&sep, 1, 1, plikbin);
+		fread(&value, 1, 1, plikbin);
+		fread(&count, 1, 1, plikbin);
+		fwrite(&sep, 1, 1, plikwynik);
+		fwrite(&value, 1, 1, plikwynik);
+		fwrite(&count, 1, 1, plikwynik);
+	}
+	fwrite(&b->solveid, 4, 1, plikwynik);
+
+	
+
+
+
+
+	fclose(plikbin);
+	fclose(plikwynik);
+	
 }
 
 void wypisz_czesc(labirynt_t* l) 

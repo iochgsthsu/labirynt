@@ -6,7 +6,7 @@
 #define TMP_KROKI_R "zkrtmp"
 #define TMP_KROKI "zktmp"
 #define BIN2TEXT "tmpbintext"
-#define MAX_STOS 2048
+#define MAX_STOS 128
 #define FILEID "CBRR"
 
 
@@ -24,6 +24,7 @@ bin_t* wczytajbininfo(char*);
 stos_t* stos_do_pliku(stos_t*, int);
 int sprawdz_format(char* nazwa); // 0 - niewlasciwy, 1 - tekstowy, 2 - binarny
 void bin2text(bin_t*, char*);
+void zapiszbin(bin_t*, char* nazwabin, char* nazwawynik);
 
 
 #endif
