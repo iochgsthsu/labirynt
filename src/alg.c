@@ -15,7 +15,7 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 	int nr_lk = 0;
 	kmk_t km;
 	kmk_t dodajk;
-	l->data[w%DATA_WIERSZE][k%DATA_KOLUMNY] = 'b';
+	l->data[w%DATA_WIERSZE][k%DATA_KOLUMNY] = 'O';
 	km.x = w;
 	km.y = k;
 	kolejka_t* kol = NULL;
@@ -67,7 +67,7 @@ int bfs(labirynt_t* l, char* nazwa, int w, int k)
 					stos = stos_do_pliku(stos, nr_lk);
 					return nr_lk;
 				}
-				l->data[tw][tk] = 'b';
+				l->data[tw][tk] = 'O';
 				kol = k_dodaj(kol, dodajk);
 
 			}
